@@ -26,7 +26,7 @@ SECRET_KEY = '#xvv1ew-aszbg%*ycpoix((@%ug&#uh*#%*4nj7nm(e8ghn+=n'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.102', '127.0.0.1', '192.168.1.103', '192.168.43.209']
+ALLOWED_HOSTS = ['192.168.1.102', '127.0.0.1', '192.168.1.103', '192.168.43.209', 'libercen.herokuapp.com']
 PROJECT_DIR = Path(__file__).parent
 
 # Application definition
