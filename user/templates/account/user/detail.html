@@ -1,0 +1,105 @@
+{% extends "personal/header.html" %}
+{% load thumbnail %}
+{% load staticfiles %}
+{% block title %}{{ user.get_full_name }}{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'personal/css/profile.css' %}" type = "text/css"/>
+    <h1>{{ user.username }}</h1>
+	{% if user.profile.photo %}
+    <div class="profile-info">
+    {% thumbnail user.profile.photo "180x180" crop="100%" as im %}
+        <img src="{{ im.url }}" class="user-detail">
+    </div>
+	{% else %}
+	<div class="no-profile-photo">
+        <img src="{% static 'personal/icons/noimg.png' %}" class="user-detail" style="max-height:200px;">
+    </div>
+	{% endif %}
+	<a href="#" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow" class="follow button">
+            {% if request.user not in user.followers.all %}
+                Follow
+            {% else %}
+                Unfollow
+            {% endif %}
+    </a>
+	{% with total_followers=user.followers.count total_following=user.following.count %}
+	<ul class="tab">
+	  <li><a href="#" class="tablinks" onclick="openCity(event, 'News-feed')">News feed</a></li>
+	  <li><a href="#" class="tablinks" onclick="openCity(event, 'Images')">Images</a></li>
+	  <li><a href="#" class="tablinks" onclick="openCity(event, 'Courses')">Courses</a></li>
+	  <li><a href="#" class="tablinks" onclick="openCity(event, 'Followers')"><span class="count"><span class="total">{{ total_followers }}</span> follower{{ total_followers|pluralize }}</span></a></li>
+	  <li><a href="#" class="tablinks" onclick="openCity(event, 'Following')"><span class="count"><span class="total">{{ total_following }}</span> following</span></a></li>
+	</ul>
+	<div id="Images" class="tabcontent">
+	  <h3>Images</h3>
+	  <div id="image-list" class="image-container">
+            {% include "images/image/list_ajax.html" with images=user.images_created.all %}
+      </div>
+	</div>
+	<div id="Followers" class="tabcontent">
+		<div class="followers">
+			<h3>Followers</h3>
+            {% for user in user.followers.all %}
+                <div>
+                    <a href='{{ user.get_absolute_url }}'>{{ user.first_name }}</p>
+                </div>
+            {% empty %}
+                No followers yet.
+            {% endfor %}
+		</div>
+	</div>
+	<div id="Following" class="tabcontent">
+			<h3>Following</h3>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+			{% for user in user.following.all %}
+                <div>
+                    <a href='{{ user.get_absolute_url }}'>{{ user.first_name }}</p>
+                </div>
+            {% empty %}
+                No followers yet.
+            {% endfor %}
+    </div>
+    {% endwith %}
+	
+<script>
+function openCity(evt, cityName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+</script>
+{% endblock %}
+
+{% block domready %}
+    $('a.follow').click(function(e){
+        e.preventDefault();
+        $.post('{% url "user_follow" %}',
+            {
+                id: $(this).data('id'),
+                action: $(this).data('action')
+            },
+            function(data){
+                if (data['status'] == 'ok')
+                {
+                    var previous_action = $('a.follow').data('action');
+
+                    // toggle data-action
+                    $('a.follow').data('action', previous_action == 'follow' ? 'unfollow' : 'follow');
+                    // toggle link text
+                    $('a.follow').text(previous_action == 'follow' ? 'Unfollow' : 'Follow');
+
+                    // update total followers
+                    var previous_followers = parseInt($('span.count .total').text());
+                    $('span.count .total').text(previous_action == 'follow' ? previous_followers + 1 : previous_followers - 1);
+                }
+        });
+    });
+{% endblock %}

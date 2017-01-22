@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Log-in{% endblock %}
+
+{% block head %}
+<style>
+.social ul{
+	padding:0;
+	list-style: none;
+	position: relative;
+	
+}
+.social li a {
+	position: absolute;
+	width: 270px;
+	height: 30px;
+	border-radius: 5px;
+	color: #fff;
+	padding-top: 4px;
+	padding-left: 35px;
+	text-decoration: none;
+	
+}
+
+
+.facebook {
+	width:100%;
+	position: relative;
+	background-color: #3b5998;
+	background-image: url('/static/icons/facebook.png');
+    background-position: -2px -3px;
+    background-repeat: no-repeat;
+	height: 30px;
+	background-size: 30px;
+	border-radius: 5px;
+	
+}
+.twitter {
+	width:100%;
+	position: relative;
+	margin-top: 10px;
+	background-color: #61aadf;
+	background-image: url('/static/icons/twitter.png');
+    background-position: 3px 3px;
+    background-repeat: no-repeat;
+	height: 30px;
+	background-size: 30px;
+	border-radius: 5px;
+}
+</style>
+{% endblock %}
+
+{% block main %}
+	<div class="w3-white w3-round w3-border w3-border-dark-grey" style="max-width:400px; margin:0 auto; margin-top:20px;">
+	<div class="w3-white w3-round w3-padding-16" style="max-width:350px; margin:0 auto;">
+	<div style="margin:0 10px;">
+    <h2 class="custom-font-dark-grey">Log-in</h2>
+    {% if form.errors %}
+	<div class="alert alert-danger alert-dismissible" role="alert">
+  		<button type="button" class="close" data-dismiss="alert" aria-			label="Close"><span aria-hidden="true">&times;</span></button>
+  		Your username and password did not match. Please try again.
+	</div>
+    {% endif %}
+    
+    <div class="login-form">
+        <form action="{% url "login" %}" method="post">
+			<p><input class="form-control" id="id_username" name="username" type="text" placeholder="Username or Email" /></p>
+			<p><input class="form-control" id="id_password" name="password" type="password" placeholder="Password" /></p>
+			<input type='hidden' name='csrfmiddlewaretoken' value='XPwzVgsZOvCmqjBrJ0Ed7la3iGm4gnTw' />
+			<input type="hidden" name="next" value="" />
+			{% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}" />
+            <p><input style="box-shadow:none;" class="w3-btn custom-blue w3-round" type="submit" value="Log-in"></p>
+        </form>
+        <p><a href="{% url "password_reset" %}">Forgot password?</a></p>
+    </div>
+    
+	<div class="social">
+		<ul>
+			<li class="facebook"><a class="social-auth" href="/social-auth/login/facebook/">Login with Facebook</a></li>
+			<li class="twitter"><a class="social-auth" href="/social-auth/login/twitter/">Login with Twitter</a></li>
+		</ul>
+	</div>
+	<p>Not have account yet? <a href="{% url "register" %}">Sign up</a></p>
+</div>
+</div>
+</div>
+{% endblock main %}

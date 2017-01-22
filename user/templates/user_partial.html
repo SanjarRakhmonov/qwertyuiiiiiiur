@@ -1,0 +1,19 @@
+{% load i18n %}
+{% load humanize %}
+{% load thumbnail %}
+
+{% if request.user in user.followers.all %}
+    <li user-id="{{ user.pk }}" action="unfollow" csrf="{{ csrf_token }}" class="w3-padding-16 w3-white">
+        <img style="margin-top:-7px;width:50px;" class="w3-left w3-circle w3-margin-right" src="{{ user.profile.get_picture }}">
+        <h4><a href="{% url 'profile' user.username %}">{{ user.username }}</a></h4>
+        <button style="color: white; margin-top:-40px; box-shadow:none;" class="w3-closebtn w3-padding w3-margin-right w3-medium w3-btn w3-round w3-white w3-border w3-border-green follow unfollow"><span class="text">Following</span>
+	    </button>
+    </li>
+{% else %}
+    <li user-id="{{ user.pk }}" action="follow" csrf="{{ csrf_token }}" class="w3-padding-16 w3-white">
+        <img style="margin-top:-7px;width:50px;" class="w3-left w3-circle w3-margin-right" src="{{ user.profile.get_picture }}">
+        <h4><a href="{% url 'profile' user.username %}">{{ user.username }}</a></h4>
+        <button style="color: white; margin-top:-40px; box-shadow:none;" class="w3-closebtn w3-padding w3-margin-right w3-medium w3-btn w3-round w3-white w3-border w3-border-blue follow"><span class="text">Follow</span>
+	    </button>
+    </li>
+{% endif %}

@@ -1,0 +1,19 @@
+{% load thumbnail %}
+
+    <div style="padding-top:5px; padding-left:4px; padding-right:4px;" class="w3-row-padding">
+     {% for image in images %}
+	 <div style="width: 33.33333%; float:left; padding:0 2px; margin-bottom:4px;" class="w3-container">	
+      <a href="{{ image.get_absolute_url }}">
+            {% thumbnail image.image "300x300" crop="100%" as im %}
+                <a href="{{ image.get_absolute_url }}">
+                    <img src="{{ im.url }}" style="width:100%;" class="w3-hover-opacity">
+                </a>
+       </a>
+	</div>
+     {% if forloop.counter|divisibleby:3 %}
+    </div>
+    <div style="padding-top:5px; padding-left:4px; padding-right:4px;" class="w3-row-padding">
+     {% endif %}
+
+     {% endfor %}
+     </div>

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Add new image{% endblock %}
+
+{% block main %}
+	<div class="w3-white w3-round w3-border w3-border-dark-grey" style="max-width:700px; margin:0 auto; margin-top:20px;">
+	<div class="w3-white w3-round w3-padding-16" style="max-width:650px; margin:0 auto;">
+	<div style="margin:0 10px;">
+    <h2 class="custom-font-dark-grey">Add new image</h2>
+    <form action="." method="post" enctype="multipart/form-data">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <input class="w3-btn w3-round custom-blue" style="box-shadow:none;" type="submit" value="Add image">
+    </form>
+</div>
+</div>
+</div>
+{% endblock main %}

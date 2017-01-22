@@ -1,0 +1,15 @@
+{% load i18n %}
+{% load humanize %}
+
+<ul style="max-height:300px; overflow-y: auto; margin-left:5px; margin-right:5px;">
+  {% for notification in notifications %}
+    <li class="clearfix">
+      <img src="{{ notification.from_user.profile.get_picture }}" class="user-picture">
+      <p>{{ notification|safe|linebreaks }}</p>
+      <p><small>{{ notification.date|naturaltime }}</small></p>
+    </li>
+  {% empty %}
+    <li style="text-align: center">{% trans 'You have no unread notification' %}</li>
+  {% endfor %}
+    <li style="text-align: center"><a href="{% url 'notifications' %}">{% trans 'See all' %}</a></li>
+</ul>

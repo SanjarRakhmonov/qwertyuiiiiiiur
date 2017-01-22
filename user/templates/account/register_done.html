@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block main %}
+	<div class="w3-white w3-round w3-border w3-border-dark-grey" style="max-width:700px; margin:0 auto; margin-top:20px;">
+	<div class="w3-white w3-round w3-padding-16" style="max-width:650px; margin:0 auto;">
+	<div style="margin:0 10px;">
+    <h1>Welcome <strong style="color:#3b5998">@{{ new_user.username }}!</strong></h1>
+    <p>Your account has been successfully created. Now you can <a href="{% url "login" %}">log in</a>.</p>
+	</div>
+</div>
+</div>
+{% endblock main %}

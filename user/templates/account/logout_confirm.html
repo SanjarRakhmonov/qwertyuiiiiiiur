@@ -1,0 +1,18 @@
+
+
+{% extends 'base.html' %}
+{% block title %}Log-Out{% endblock %}
+
+{% block main %}
+	<div class="w3-white w3-round w3-border w3-border-dark-grey" style="max-width:400px; margin:0 auto; margin-top:20px;">
+	<div class="w3-white w3-round w3-padding-16" style="max-width:350px; margin:0 auto; height:185px;">
+	<div style="margin:0 10px;">
+    <h2>Log-Out</h2>
+
+        <p>Are you sure want to log-out?</p>
+		<a style="box-shadow:none;" href="/account/logout-then-login" class="w3-round w3-left w3-btn w3-white w3-border w3-border-green">Yes</a>
+		<a style="margin-left:10px; box-shadow:none;" href="/" class="w3-round w3-left w3-btn w3-white w3-border w3-border-blue">No</a>
+	</div>
+</div>
+</div>
+{% endblock main %}

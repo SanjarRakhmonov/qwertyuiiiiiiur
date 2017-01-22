@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block head %}
+    <link href="{% static 'css/profile.css' %}" rel="stylesheet">
+  <link href="{% static 'css/feeds.css' %}" rel="stylesheet">
+  <script src="{% static 'js/feeds.js' %}"></script>
+  <style>
+   @media only screen and (max-width: 500px){
+    ul.stream li a img.user {width: 40px;}
+    ul.stream li div.post {margin-left:30px; padding-left:5px;}
+    .feed-container {
+    padding-left: 8px;
+    padding-right: 8px;}}
+  @media only screen and (max-width: 400px){
+    ul.stream li a img.user {width: 30px;}
+    ul.stream li div.post {margin-left:30px; padding-left:5px;}
+  }
+  @media only screen and (max-width: 500px){
+.action-list {
+padding-left:0px;
+padding-right:0px;
+}
+}
+  </style>
+{% endblock head %}
+
+{% block main %}
+
+  <div class="row">
+    <div class="action-list col-md-6 col-md-offset-3">
+
+      <div class="panel panel-default panel-feed">
+        <div class="panel-body">
+          <ul class="stream" id="actions">
+              {% include 'feeds/partial_action.html' %}
+          </ul>
+        </div>
+      </div>      
+    </div>
+  </div>
+
+
+
+{% endblock main %}
+
+{% block domready %}
+    var page = 1;
+    var empty_page = false;
+    var block_request = false;
+
+    $(window).scroll(function() {
+        var margin = $(document).height() - $(window).height() - 200;
+        if  ($(window).scrollTop() > margin && empty_page == false && block_request == false) {
+		    block_request = true;
+		    page += 1;
+		    $.get('?page=' + page, function(data) {
+		        if(data == '')
+		        {
+		            empty_page = true;
+		        }
+		        else {
+                    block_request = false;
+                    $('#actions').append(data);
+    	        }
+            });
+    	}
+    });
+{% endblock %}

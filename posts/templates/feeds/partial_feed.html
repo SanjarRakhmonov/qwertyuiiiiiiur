@@ -1,0 +1,54 @@
+{% load i18n %}
+{% load humanize %}
+
+<ul class="stream w3-ul w3-white" id="feeds">
+{% for feed in feeds %}
+<li feed-id="{{ feed.pk }}" csrf="{{ csrf_token }}">
+  <div class="feed-container">
+    <a href="{% url 'profile' feed.user.username %}"><img src="{{ feed.user.profile.get_picture }}" class="user"></a>
+    <div class="post">
+      {% if feed.user == user %}
+        <span class="fa fa-remove remove-feed" title="{% trans 'Click to remove this feed' %}"></span>
+      {% endif %}
+      <h3><a href="{% url 'profile' feed.user.username %}">{{ feed.user.profile.get_screen_name }}</a> <small>{{ feed.date|naturaltime }}</small></h3>
+      <div  style="min-height:40px;">
+        <p>{{ feed.post|safe|linebreaks }}</p>
+      </div>
+      <div class="interaction">
+        {% if user in feed.get_likers %}
+          <button style="padding:0; box-shadow:none; width:20px; margin-right:0; font-size:17px; color:#e80435;" class="w3-large w3-btn w3-white like unlike">
+            <i style=" color:#e80435;" class="fa fa-heart"></i>
+          </button>
+            <span class="text"></span>
+            <span class="small-size like-count">{{ feed.likes }}</span><span class="small-size like-name"> like{{ feed.likes|pluralize }}</span>
+
+        {% else %}
+          <button style="padding:0; width:20px; margin-right:0; box-shadow:none; font-size:17px; color:#e80435;" class="w3-large w3-btn w3-white like">
+            <i style=" color:#e80435;" class="fa fa-heart-o"></i>
+          </button>
+            <span class="text"></span>
+            <span class="like-count small-size">{{ feed.likes }}</span><span class="small-size like-name"> like{{ feed.likes|pluralize }}</span>
+
+        {% endif %}
+        <button style="padding:0; box-shadow:none; width:27px; margin-right:0;" class="w3-btn w3-white comment">
+          <i style="color:#3b5998" class="fa fa-comments-o w3-large"></i>
+        </button>
+        <span class="small-size">{% trans 'Comments' %}</span>
+          <span style="padding-left:3px;" class="small-size comment-count">{{ feed.comments }}</span>
+
+      </div>
+      <div class="comments">
+        <form role="form" method="post" action="{{ comment }}" onsubmit="return false">
+          {% csrf_token %}
+          <input type="hidden" name="feed" value="{{ feed.pk }}">
+          <input type="text" class="form-control input-sm" placeholder="{% trans 'Write a comment...' %}" name="post" maxlength="255">
+        </form>
+        <ol class="clearfix">
+          {% comment %} Place holder to load feed comments {% endcomment %}
+        </ol>
+      </div>
+    </div>
+  </div>
+</li>
+{% endfor %}
+</ul>

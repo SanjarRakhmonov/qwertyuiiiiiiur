@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block title %}{{ page_user.profile.get_screen_name }}{% endblock %}
+
+{% block head %}
+  <link href="{% static 'css/profile.css' %}" rel="stylesheet">
+  <link href="{% static 'css/feeds.css' %}" rel="stylesheet">
+  <script src="{% static 'js/jquery.bullseye-1.0-min.js' %}"></script>
+  <script src="{% static 'js/feeds.js' %}"></script>
+  <style>
+	.main-content{
+	padding-top:10px;
+	}
+   @media only screen and (max-width: 780px){
+     .main-content{padding-left:3px; padding-right:3px;}
+
+     }
+   @media only screen and (max-width: 500px){
+    ul.stream li a img.user {width: 40px;}
+    ul.stream li div.post {margin-left:30px; padding-left:5px;}
+    .feed-container {
+    padding-left: 8px;
+    padding-right: 8px;}}
+	.profile-menu .w3-btn { padding:6px 0; }
+  @media only screen and (max-width: 400px){
+    ul.stream li a img.user {width: 30px;}
+    ul.stream li div.post {margin-left:30px; padding-left:5px;}
+    .bio{font-size:10px;}
+  }
+  @media only screen and (max-width: 500px){
+.action-list {
+padding-left:0px;
+padding-right:0px;
+}
+.s-bio{ font-size:12px; padding-top:5px; }
+.bio {font-size:11px;}
+.username{font-size:30px;}
+.profile-btn{font-size:10px; margin-left:10px; margin-top:9px;}
+}
+@media only screen and (min-width: 500px){
+.username{font-size:40px;}
+.profile-btn{font-size:15px; margin-left:20px; margin-top:16px;}
+}
+@media only screen and (max-width: 780px){
+.bio {font-size:12px;}
+
+}
+.bio {font-size:14px;}
+@media only screen and (max-width: 880px){
+.content{padding-left:0; padding-right:0;}
+}
+@media only screen and (max-width: 699px){
+.user-card{display:none;}
+.profile-part{width:100%; padding-left:4px; padding-right:4px;}
+.mobile-follow{ padding-left:10px; padding-top:15px; }
+.profile-menu{font-size:10px;}
+}
+@media only screen and (min-width: 700px){
+.profile-part{width: 74.9999%}
+.mobile-ava{display:none;}
+.profile-menu{font-size:18px;}
+.s-bio{display:none}
+}
+  @media only screen and (max-width: 600px){
+  .mobile-ava{width:96px; padding-left:17px;}
+  .main-content {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+  }
+  @media only screen and (min-width: 600px){
+  .mobile-ava{width:150px; padding-left:20px;}
+  .content{padding-top:20px;}
+  }
+  </style>
+{% endblock head %}
+
+{% block main %}
+<div class="w3-content main-content" style="max-width:1400px">
+    <!--
+	<nav class="w3-sidenav w3-collapse w3-white w3-round w3-card" style="z-index:3;width:300px; height: 500px;" id="mySidenav"><br>
+  <div class="w3-container">
+    <a href="#" onclick="w3_close()" style="color:black" class="w3-hide-large w3-right w3-jumbo w3-padding" title="close menu">
+      <i class="fa fa-remove"></i>
+    </a>
+    <img src="{{ page_user.profile.get_picture }}" style="width:70%; margin-l" class="w3-round"><br><br>
+    <ul class="w3-padding" style="list-style:none">
+        {% if page_user.profile.job_title %}
+        <li><span class="w3-padding"></span> {{ page_user.profile.job_title }}</li>
+        {% endif %}
+        {% if page_user.profile.location %}
+        <li><span class="w3-padding"></span> {{ page_user.profile.location }}</li>
+        {% endif %}
+        {% if page_user.profile.url %}
+        <li><span class="w3-padding"></span> <a href="{{ page_user.profile.get_url }}" target="_blank">{{ page_user.profile.get_url }}</a></li>
+        {% endif %}
+    </ul>
+  </div>
+  </nav>
+  -->
+
+<!-- Overlay effect when opening sidenav on small screens -->
+<!-- !PAGE CONTENT! -->
+<div class="col-md-10 col-md-offset-1 w3-row w3-container content">
+{% with total_followers=page_user.followers.count total_following=page_user.following.count %}
+  <!-- Header -->
+
+     <!--
+    <a href="#"><img src="{{page_user.profile.get_picture}}" style="width:65px;" class="w3-circle w3-right w3-margin w3-hide-large w3-hover-opacity"></a>
+    <span class="w3-opennav w3-hide-large w3-xxlarge w3-hover-text-grey" onclick="w3_open()"><i class="fa fa-bars"></i></span>
+	<ul style="list-style:none;" class="follow-btn w3-navbar">
+    <li><p style="font-size:30px;">{{ page_user.username }}</p></li>
+	{% if request.user == page_user %}
+	<li>
+	<a href="/settings/" style="margin-left:20px; margin-top:5px; box-shadow:none;" class="w3-btn w3-white w3-border w3-round w3-border-dark-grey">Settings</a>
+	</li>
+	{% else %}
+	{% if request.user in page_user.followers.all %}
+	<li user-id="{{ page_user.pk }}" action="unfollow" csrf="{{ csrf_token }}">
+	<button style="margin-left:20px; margin-top:5px; box-shadow:none;" class="w3-btn w3-border w3-white w3-round w3-border-green follow unfollow"><span class="text">Following</span></button>
+	</li> 
+	{% else %}
+	<li user-id="{{ page_user.pk }}" action="follow" csrf="{{ csrf_token }}">
+	<button style="margin-left:20px; margin-top:5px; box-shadow:none;" class="w3-btn w3-border w3-white w3-border-blue w3-round follow"><span class="text">Follow</span></button>
+	</li>
+	{% endif %}
+	{% endif %} 
+	</ul>
+    {% include 'core/partial_profile_menu.html' with active='posts' %}
+      -->
+    <div class="w3-col m3 w3-white user-card">
+     <div class="w3-card w3-container">
+        <a style="margin:0 auto;" href="#"><img style="display: block; margin:0 auto; width:100%; margin-top:15px;" src="{{page_user.profile.get_picture}}" class="w3-round w3-left w3-hover-opacity"></a>
+         <div class="w3-left" style="padding-top:10px;">
+            <ul class="bio" style="list-style:none; padding-left:0">
+                <li class="bio"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{page_user.profile.get_screen_name}}</li>
+                <li class="bio"><span class="glyphicon glyphicon-info-sign"></span> {{page_user.profile.about}}</li>
+            </ul>
+         </div>
+     </div>
+    </div>
+{% endwith %}
+  <!-- First Photo Grid-->
+  <div class="w3-col w3-container profile-part w3-row">
+    <a class="mobile-ava w3-left" style="margin:0 auto;" href="#"><img style="display: lock; margin:0 auto; max-width:100%; margin-top:15px;" src="{{page_user.profile.get_picture}}" class="w3-round w3-left w3-hover-opacity"></a>
+    <ul style="list-style:none;" class="follow-btn w3-left mobile-follow">
+    <li class="w3-left username"><span  style="font-family: 'Josefin Sans', sans-serif;">{{ page_user.username }}</span></li>
+	{% if request.user == page_user %}
+	<li class="w3-left">
+	<a href="/settings/" style="box-shadow:none;" class="profile-btn w3-btn w3-right w3-white w3-border w3-round w3-border-dark-grey">Settings</a>
+	</li>
+	{% else %}
+	{% if request.user in page_user.followers.all %}
+	<li class="w3-left profile-btn" user-id="{{ page_user.pk }}" action="unfollow" csrf="{{ csrf_token }}">
+	<button style="box-shadow:none;" class="profile-btn w3-btn w3-border w3-white w3-round w3-border-green follow unfollow"><span class="text">Following</span></button>
+	</li>
+	{% else %}
+	<li class="w3-left profile-btn" user-id="{{ page_user.pk }}" action="follow" csrf="{{ csrf_token }}">
+	<button style="box-shadow:none;" class="profile-btn w3-btn w3-border w3-white w3-border-blue w3-round follow"><span class="text">Follow</span></button>
+	</li>
+	{% endif %}
+	{% endif %}
+    <br>
+    <li class="s-bio"><strong class="w3-left">{{page_user.profile.get_screen_name}}</strong></li>
+	</ul>
+
+      </div>
+  <div style="padding-top:10px; padding-left:20px;" class="s-bio w3-col w3-container">
+      <span style="font-size:12px;">{{page_user.profile.about|truncatechars:90}}</span><a class="w3-btn w3-border w3-border-dark-grey w3-white w3-round" style="font-size:8px; height:20px; width:40px; padding-left:7px; padding-top:5px;" href="#">more</a>
+  </div>
+  <div class="w3-col w3-container main-content profile-part" style="padding-top:15px;">
+    {% include 'core/partial_profile_menu.html' with active='images' %}
+    <div class="w3-card">
+      <div class="action-list">
+        <div class="stream-update">
+          <a href="#"><span class="new-posts"></span> new posts</a>
+        </div>
+        <div>
+        <ul class="stream w3-ul w3-white">
+            {% include "images/image/list_ajax.html" with images=page_user.images_created.all %}
+        </ul>
+        <div class="load">
+          <img src="{% static 'img/loading.gif' %}">
+        </div>
+        <form method="get" action="{% url 'load' %}" id="load_feed" autocomplete="off">
+          <input type="hidden" name="feed_source" id="feed_source" value="{{ page_user.pk }}">
+          <input type="hidden" name="from_feed" value="{{ from_feed }}">
+          <input type="hidden" name="page" value="{{ page }}">
+        </form>
+      </div>
+  </div>
+</div>
+</div>
+</div>
+{% endblock main %}
+
+

@@ -1,0 +1,9 @@
+{% load i18n %}
+{% with total_followers=page_user.followers.count total_following=page_user.following.count total_posts=page_user.posts.count total_images=page_user.images_created.count %}
+    <div class="profile-menu w3-row">
+      <a href="{% url 'profile' page_user.username %}" style="float:left; width:22.99999%; box-shadow:none;" class="w3-card w3-btn {% if active == 'posts' %}custom-blue{% else %}custom-white {% endif %}"><span class="count"><span class="total">{{ total_posts }}</span> post{{ total_posts|pluralize }}</span></a>
+      <a href="{% url 'profile_images' page_user.username %}" style="float:left; width:22.99999%; box-shadow:none;" class="w3-card w3-btn {% if active == 'images' %}custom-blue{% else %}custom-white{% endif %}"><span class="count"><span class="total">{{ total_images }}</span> image{{ total_images|pluralize }}</span></a>
+      <a href="{% url 'profile_followers' page_user.username %}" style="float:left; width:26.99999%; box-shadow:none;" class="w3-card w3-btn {% if active == 'followers' %}custom-blue{% else %}custom-white{% endif %}"><span style="width:100%;" class="count"><span class="total">{{ total_followers }}</span> follower{{ total_followers|pluralize }}</span></a>
+      <a href="{% url 'profile_following' page_user.username %}" style="float:left; width:26.99999%; box-shadow:none;" class="w3-card w3-btn {% if active == 'following' %}custom-blue{% else %}custom-white{% endif %}"><span class="count"><span class="total">{{ total_following }}</span> following</span></a>
+    </div>
+{% endwith %}

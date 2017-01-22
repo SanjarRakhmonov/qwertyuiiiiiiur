@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Search{% endblock %}
+
+{% block main %}
+    {% if "query" in request.GET %}
+        <h3>Found {{ total_results }} result{{ total_results|pluralize }}</h3>
+		<div id="search-results">
+        {% for result in results %}
+        		{% include "user_partial.html" with user=result.object %}
+        {% empty %}
+        	<p>No results.</p>
+        {% endfor %}
+		</div>
+    {% else %}
+        <h1>Search for posts</h1>
+        <form id="search-form" action="." method="get">
+            {{ form.as_p }}
+            <input type="submit" value="Search">
+        </form>
+    {% endif %}
+{% endblock main %}

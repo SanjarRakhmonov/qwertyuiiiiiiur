@@ -1,0 +1,40 @@
+{% extends "personal/header.html" %}
+{% load thumbnail %}
+
+{% block title %}{{ user.get_full_name }}{% endblock %}
+
+{% block content %}
+<div class="all-details">
+	<div class="user-nav">
+		<div class="user-top-nav">
+			<h1 class="username">{{ user.username }}</h1>
+			<a id="edit" href="/account/edit/" class="btn btn-default edit-profile-button">Edit profile</a>
+		</div>
+		<div class="user-info">
+			<h4><strong>{{ user.get_full_name }}</strong> {{ user.profile.about }}</h4>
+		</div>
+		{% with total_followers=user.followers.count total_following=user.following.count %}
+		<div class="prof-nav-bar">
+			<ul>
+				<li style="width:84px"><a href=".">Images</a></li>
+				<li style="width:69px"><a href="/account/posts/">Posts</a></li>
+				<li style="width:87px"><a href="/account/courses">Courses</a></li>
+				<li style="width:94px"><a href="#">Learning</a></li>
+				<li style="width:75px"><a href="/account/news/">News</a></li>
+				<li style="width:99px"><a href="/account/followers/"><span class="count"><span class="total">{{ total_followers }}</span> follower{{ total_followers|pluralize }}</span></a></li>
+				<li style="width:99px"><a href="/account/following/"><span class="count"><span class="total">{{ total_following }}</span> following</span></a></li>
+			</ul>
+		</div>
+		{% endwith %}
+		<div class="profile-image">
+		{% thumbnail user.profile.photo "220x220" crop="100%" as im %}
+			<img src="{{ im.url }}" class="user-detail">
+		</div>
+	</div>
+		<div class="user-images">
+			<div id="image-list" class="image-container">
+				{% include "images/image/list_ajax.html" with images=user.images_created.all %}
+			</div>
+		</div>
+</div>
+{% endblock %}

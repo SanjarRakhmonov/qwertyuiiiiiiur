@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Create an account{% endblock %}
+
+{% block head %}
+<style>
+.errorlist{
+	list-style:none;
+	padding:0;
+}
+.errorlist li {
+	color:red;
+}
+
+</style>
+{% endblock head %}
+
+{% block main %}
+	<div class="w3-white w3-round w3-border w3-border-dark-grey" style="max-width:400px; margin:0 auto; margin-top:20px;">
+	<div class="w3-white w3-round w3-padding-16" style="max-width:350px; margin:0 auto;">
+	<div style="margin:0 10px;">
+    <h1>Join us</h1>
+    <form action="." method="post">
+        {{ user_form.as_p }}
+        {% csrf_token %}
+        <p><input style="box-shadow:none;" class="w3-btn w3-round custom-blue" type="submit" value="Sign up"></p>
+    </form>
+	<p class="custom-font-dark-grey w3-small" >By signing up, you agree to the Terms of Service and Privacy Policy, including Cookie Use.</p>
+	</div>
+</div>
+</div>
+{% endblock main %}
+
+
