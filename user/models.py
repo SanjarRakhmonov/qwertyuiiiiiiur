@@ -28,7 +28,7 @@ class Profile(models.Model):
         return url
 
     def get_picture(self):
-        no_picture = 'http://127.0.0.1:8000/media/profile_pictures/image-not-available-1.jpg'
+        no_picture = 'http://libercen.herokuapp.com/media/profile_pictures/image-not-available-1.jpg'
         try:
             filename = settings.MEDIA_ROOT + '/profile_pictures/' + self.user.username + '.jpg'
             picture_url = settings.MEDIA_URL + 'profile_pictures/' + self.user.username + '.jpg'
