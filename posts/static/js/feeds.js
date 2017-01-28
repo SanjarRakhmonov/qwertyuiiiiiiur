@@ -415,18 +415,21 @@ $(function () {
       success: function (data) {
         if ($(".follow", li).hasClass("unfollow")) {
           $(".follow", li).removeClass("unfollow");
+          $(li).attr("action", "follow");
           $(".follow", li).removeClass("w3-border-green");
           $(".follow", li).addClass("w3-border-blue");
           $(".follow .text", li).text("Follow");
         }
         else {
           $(".follow", li).addClass("unfollow");
+          $(li).attr("action", "unfollow");
           $(".follow", li).removeClass("w3-border-blue");
           $(".follow", li).addClass("w3-border-green");
           $(".follow .text", li).text("Following");
         }
         $(".follow", li).addClass(data);
         $(".follow", li).removeClass(data);
+		$(li).attr(data);
       }
     });
     return false;
@@ -449,18 +452,21 @@ $(function () {
       success: function (data) {
         if ($(".follow", li).hasClass("unfollow")) {
           $(".follow", li).removeClass("unfollow");
+          $(li).attr("action", "follow");
           $(".follow", li).removeClass("w3-border-green");
           $(".follow", li).addClass("w3-border-blue");
           $(".follow .text", li).text("Follow");
         }
         else {
           $(".follow", li).addClass("unfollow");
+          $(li).attr("action", "unfollow");
           $(".follow", li).removeClass("w3-border-blue");
           $(".follow", li).addClass("w3-border-green");
           $(".follow .text", li).text("Following");
         }
         $(".follow", li).addClass(data);
         $(".follow", li).removeClass(data);
+		$(li).attr(data);
       }
     });
     return false;

@@ -33,13 +33,21 @@ padding-right:0px;
 
       <div class="panel panel-default panel-feed">
         <div class="panel-body">
-          <ul class="stream" id="actions">
+			{% if actions %}
+          <ul class="stream" id="actions">	
               {% include 'feeds/partial_action.html' %}
           </ul>
+			{% else %}
+			<div class="w3-container w3-border w3-border-dark-grey w3-round" style="width:100%;">
+			<img src="/media/welcome.png" style="width:100%; padding-top:5px; margin:0 auto;">
+			<p style="text-align:center; padding-top:6px; font-size:18px;">Welcome to my website! Start following accounts to see posts and photos. Invite your friends who are not here yet to have more fun.</p>
+			{% endif %}
+			</div>
         </div>
       </div>      
     </div>
   </div>
+
 
 
 

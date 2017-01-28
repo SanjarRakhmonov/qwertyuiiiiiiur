@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseBadRequest,\
                         HttpResponseForbidden
 from posts.models import Feed
@@ -16,6 +16,7 @@ from ttp import ttp
 from taggit.models import Tag
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.models import User
+from posts.forms import WritePostForm
 
 
 FEEDS_NUM_PAGES = 10
@@ -55,9 +56,7 @@ def actions_list(request):
     actions = Action.objects.exclude(user=request.user, target_id=None)
     following_ids = request.user.following.values_list('id', flat=True)
     page = request.GET.get('page')
-    if following_ids:
-        # If user is following others, retrieve only their actions
-        actions = actions.filter(user_id__in=following_ids).select_related('user', 'user__profile').prefetch_related('target')
+    actions = actions.filter(user_id__in=following_ids).select_related('user', 'user__profile').prefetch_related('target')
     paginator = Paginator(actions, 12)
     try:
         actions = paginator.page(page)
@@ -81,24 +80,26 @@ def actions_list(request):
 
 
 @login_required
-@ajax_required
-def post(request):
-    last_feed = request.POST.get('last_feed')
-    user = request.user
-    csrf_token = str(csrf(request)['csrf_token'])
-    feed = Feed()
-    feed.user = user
-    posted = request.POST['post']
-    hashtag=re.compile( r'(^|[^#\w])#(\w{1,30})\b')
-    hashtag = re.sub( r'(^|[^#\w])#(\w{1,15})\b', '\\1<a href="http://127.0.0.1:8000/hashtag/\\2">#\\2</a>', posted )
-    post = re.sub( r'(^|[^@\w])@(\w{1,15})\b', '\\1<a href="http://127.0.0.1:8000/\\2">@\\2</a>', hashtag )
-    post = post.strip()
-    if len(post) > 0:
-        feed.post = post[:255]
-        feed.save()
-        create_action(request.user, post, feed)
-    html = _html_feeds(last_feed, user, csrf_token)
-    return HttpResponse(html)
+def write(request):
+    if request.method == 'POST':
+        # form is sent
+        form = WritePostForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            feed = form.save(commit=False)
+            feed.user = request.user
+            posted = feed.post
+            hashtag=re.compile( r'(^|[^#\w])#(\w{1,30})\b')
+            hashtag = re.sub( r'(^|[^#\w])#(\w{1,15})\b', '\\1<a href="http://127.0.0.1:8000/hashtag/\\2">#\\2</a>', posted )
+            post = re.sub( r'(^|[^@\w])@(\w{1,15})\b', '\\1<a href="http://127.0.0.1:8000/\\2">@\\2</a>', hashtag )
+            post = post.strip()
+            if len(post) > 0:
+                feed.post = post[:255]
+                feed.save()
+                create_action(request.user, post, feed)
+                return redirect(feed.get_absolute_url())
+    else:
+        form = WritePostForm()
+    return render(request, 'feeds/write.html', {'form': form,})
 
 	
 @login_required

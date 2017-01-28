@@ -37,7 +37,7 @@ padding-right:0px;
 .s-bio{ font-size:12px; padding-top:5px; }
 .bio {font-size:11px;}
 .username{font-size:25px;}
-.profile-btn{font-size:10px; margin-left:10px; margin-top:9px;}
+.profile-btn{font-size:10px; margin-left:10px; margin-top:5px;}
 }
 @media only screen and (min-width: 500px){
 .username{font-size:40px;}
@@ -105,11 +105,11 @@ padding-right:0px;
 	</li>
 	{% else %}
 	{% if request.user in page_user.followers.all %}
-	<li class="w3-left profile-btn" user-id="{{ page_user.pk }}" action="unfollow" csrf="{{ csrf_token }}">
+	<li class="w3-left" user-id="{{ page_user.pk }}" action="unfollow" csrf="{{ csrf_token }}">
 	<button style="box-shadow:none;" class="profile-btn w3-btn w3-border w3-white w3-round w3-border-green follow unfollow"><span class="text">Following</span></button>
 	</li>
 	{% else %}
-	<li class="w3-left profile-btn" user-id="{{ page_user.pk }}" action="follow" csrf="{{ csrf_token }}">
+	<li class="w3-left" user-id="{{ page_user.pk }}" action="follow" csrf="{{ csrf_token }}">
 	<button style="box-shadow:none;" class="profile-btn w3-btn w3-border w3-white w3-border-blue w3-round follow"><span class="text">Follow</span></button>
 	</li>
 	{% endif %}
@@ -126,36 +126,23 @@ padding-right:0px;
     {% include 'core/partial_profile_menu.html' with active='posts' %}
     <div class="w3-card">
       <div class="action-list">
-		{% if request.user == page_user %}
-		  <div class="w3-row" style="padding-top:10px;">
-            <form role="form" id="compose-form">
-              {% csrf_token %}
-              <input type="hidden" name="last_feed">
-              <div class="w3-left form-group" style="width:84.9999%;">
-                <textarea placeholder="What is happening?" class="form-control" name="post"></textarea>
-              </div>
-              <div class="profile-menu form-group w3-right" style="width:14.999%;">
-                <button type="button" class="w3-btn w3-round custom-blue btn-post" style="width:100%;">
-                  <span class="glyphicon glyphicon-send"></span> {% trans 'Post' %}
-                </button>
-				  <span style="margin:0 auto; max-width:20px; width:100%; padding-top:3px;" class="help-block help-count">255</span>
-              </div>
-            </form>
-          </div>
-		{% endif %}
         <div class="stream-update">
           <a href="#"><span class="new-posts"></span> new posts</a>
         </div>
         <div>
+		{% if feeds %}
             {% include 'feeds/partial_feed.html' with feeds=feeds %}
-        <div class="load">
-          <img src="{% static 'img/loading.gif' %}">
-        </div>
-        <form method="get" action="{% url 'load' %}" id="load_feed" autocomplete="off">
-          <input type="hidden" name="feed_source" id="feed_source" value="{{ page_user.pk }}">
-          <input type="hidden" name="from_feed" value="{{ from_feed }}">
-          <input type="hidden" name="page" value="{{ page }}">
-        </form>
+		{% else %}
+			<div class="w3-container w3-white w3-border">
+				<div style="float:left; width:6.999%; padding-top:10px;">
+				<img src="/media/write.png" style="width:100%;">
+				</div>
+				<div style="float:right; width:91.999%;">
+				<p style="padding-top:10px; font-size:17px; text-align:center;">Write your first post and discuss it with your friends. Use hashtags to make your post easier to find. Example: #firstpost #helloworld.
+				</p>
+				</div>
+			</div>
+		{% endif %}
       </div>
   </div>
 </div>

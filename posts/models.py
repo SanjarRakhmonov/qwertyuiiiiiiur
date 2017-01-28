@@ -46,6 +46,9 @@ class Feed(models.Model):
         else:
             feeds = Feed.objects.filter(parent=None)
         return feeds
+	
+    def get_absolute_url(self):
+        return reverse('feed', args=[self.id])
 
     @staticmethod
     def get_feeds_after(feed):

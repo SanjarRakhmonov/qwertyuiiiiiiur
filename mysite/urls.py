@@ -62,7 +62,7 @@ urlpatterns = [
 	
     url(r'^hashtag/(?P<tag_slug>[-\w]+)/$', feeds, name='post_list_by_tag'),
 	url('social-auth/', include('social.apps.django_app.urls', namespace='social')),
-	
+
 	
 ]
 

@@ -3,6 +3,10 @@ from django.contrib.auth.models import User
 
 
 class ProfileForm(forms.ModelForm):
+    username = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        max_length=30,
+        required=False)
     first_name = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control'}),
         max_length=30,

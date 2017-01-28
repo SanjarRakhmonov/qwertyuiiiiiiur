@@ -5,7 +5,7 @@ from django.conf.urls import url
 from posts import views
 
 urlpatterns = [
-    url(r'^post/$', views.post, name='post'),
+    url(r'^post/$', views.write, name='write'),
     url(r'^like/$', views.like, name='like'),
     url(r'^comment/$', views.comment, name='comment'),
     url(r'^load/$', views.load, name='load'),

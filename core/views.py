@@ -75,7 +75,7 @@ def profile_following(request, username):
 def settings(request):
     user = request.user
     if request.method == 'POST':
-        form = ProfileForm(request.POST)
+        form = ProfileForm(request.POST, instance=request.user)
         user_form = UserEditForm(instance=request.user, data=request.POST)
         if form.is_valid() and user_form.is_valid():
             user.first_name = form.cleaned_data.get('first_name')
